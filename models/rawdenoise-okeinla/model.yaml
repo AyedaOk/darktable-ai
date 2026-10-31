@@ -19,12 +19,13 @@ attributes:
     wb_norm: none
     output_scale: match_gain
 
-repo:
-  submodule: vendor/okeinla
-
 checkpoints:
-  - url: "https://huggingface.co/AyedaOk/okeinla/resolve/7d4480d305ac9a425832afb9c110ee0b1af0200a/pytorch/iter_2940000.pt"
-    path: "temp/rawdenoise-okeinla/iter_2940000.pt"
+  - url: "https://huggingface.co/AyedaOk/okeinla/resolve/7d4480d305ac9a425832afb9c110ee0b1af0200a/onnx/model_bayer.onnx"
+    path: "output/rawdenoise-okeinla/model_bayer.onnx"
+  - url: "https://raw.githubusercontent.com/AyedaOk/okeinla/a9efc414d65fe6bd4be1c4e882be757263740d0c/LICENSE"
+    path: "output/rawdenoise-okeinla/LICENSE"
+  - url: "https://raw.githubusercontent.com/AyedaOk/okeinla/a9efc414d65fe6bd4be1c4e882be757263740d0c/licenses/NAFNet-MIT.txt"
+    path: "output/rawdenoise-okeinla/NAFNet-MIT.txt"
 
 model_card:
   long_description: "Okeinla 1.0 jointly denoises and demosaics Bayer RAW images using a NAFNet adapted from RawNIND."
@@ -35,9 +36,3 @@ model_card:
   training_data: "RawNIND and Okeinla dataset: paired noisy and reference RAW photographs."
   training_data_license: "CC-BY-SA-4.0"
   notes: "Bayer only; no X-Trans or linear-RGB variant."
-
-convert:
-  - script: convert.py
-    args:
-      checkpoint: "{temp}/iter_2940000.pt"
-      output: "{output}/model_bayer.onnx"
