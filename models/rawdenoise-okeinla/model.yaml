@@ -1,5 +1,5 @@
 id: rawdenoise-okeinla
-name: "Okeinla"
+name: "raw denoise okeinla"
 description: "Bayer RAW denoising and demosaicing with NAFNet"
 task: rawdenoise
 version: "1.0"

@@ -9,8 +9,9 @@ a packed-Bayer input and a pixel-shuffle camera-RGB output.
 - [Checkpoint](https://huggingface.co/AyedaOk/okeinla/tree/7d4480d305ac9a425832afb9c110ee0b1af0200a).
 - [Training dataset](https://huggingface.co/datasets/AyedaOk/okeinla-dataset).
 - Credits: [RawNIND](https://github.com/trougnouf/rawnind_jddc),
-  [NAFNet](https://github.com/megvii-research/NAFNet), and the
-  [RawForge/Restorer loss recipe](https://github.com/rymuelle/Restorer).
+  [NAFNet](https://github.com/megvii-research/NAFNet), and
+  [RawForge](https://github.com/rymuelle/RawForge) for the training losses,
+  with the [Restorer loss recipe](https://github.com/rymuelle/Restorer).
 
 ## ONNX model
 
@@ -18,7 +19,7 @@ a packed-Bayer input and a pixel-shuffle camera-RGB output.
 `output`, float32 `[1, 3, 1024, 1024]` camera RGB.
 Normalize black/white levels and pack RGGB channels without input white balance.
 Use cropped mirror padding, tiled inference, and output gain matching. Apply
-camera colour conversion after inference. The graph takes no ISO input.
+camera color conversion after inference. The graph takes no ISO input.
 
 ## Selection criteria
 
@@ -26,7 +27,7 @@ camera colour conversion after inference. The graph takes no ISO input.
 | --- | --- |
 | Model license | GPL-3.0-only; NAFNet components retain their MIT notice |
 | OSAID v1.0 | Open Weights; no claim of full OSAID compliance |
-| MOF | Unclassified: public denoising evaluation results are missing from the release |
+| MOF | See evaluation results below |
 | Training data license | CC BY-SA 4.0 for both datasets; [RawNIND license record](https://doi.org/10.14428/DVN/DEQCIM) |
 | Training data provenance | RawNIND and Okeinla dataset: paired noisy and reference RAW photographs. Okeinla captures use a tripod-mounted Sony A7C II with base-ISO references. |
 | Training code | Public GPLv3 source linked above |
@@ -60,6 +61,8 @@ The Okeinla dataset contains 106 Sony A7C II scenes, 761 noisy exposures, and
 test reserves, 256-pixel training crops, four crops per image, batch size four,
 and output gain matching. They use seed 2026 with deterministic mode disabled.
 
+Training losses are adapted from [RawForge](https://github.com/rymuelle/RawForge),
+with the [Restorer loss recipe](https://github.com/rymuelle/Restorer).
 The loss combines shadow-weighted L1 (0.16), MS-SSIM loss (0.84), and frozen
 ImageNet VGG16 feature L1 loss. The final stages increase the feature-loss
 weight from 0.025 to 0.035. VGG16 serves only as a training loss network;
@@ -75,10 +78,21 @@ release does not claim an exact replay of historical training.
 
 ### Evaluation and limits
 
-The repository downloads the published ONNX without re-exporting the checkpoint.
-The standard setup, validation and demo pipeline checks the integration;
-it does not measure denoising quality or compare ONNX output with PyTorch.
+We compared Okeinla and RawNIND on 133 noisy Sony A7C II images from the
+[benchmark dataset](https://huggingface.co/datasets/AyedaOk/rawbench-dataset),
+using one base-ISO reference per scene.
 
-The [MOF component requirements](https://github.com/lfai/model_openness_tool/blob/main/web/modules/mof/config/install/mof.settings.yml)
-include evaluation results even for Class III. The release cannot claim that
-class from weights and source availability alone.
+| Model | PSNR ↑ | MS-SSIM ↑ | HFEN ↓ | Mean ΔE00 ↓ |
+| --- | ---: | ---: | ---: | ---: |
+| RawNIND | 47.302874 | 0.996527 | 0.579897 | 1.383124 |
+| Okeinla | **47.544281** | **0.996969** | **0.565079** | **1.116526** |
+
+The [Python script](../../scripts/benchmark.py) evaluates ONNX RGB predictions
+with source-derived per-tile gain correction and overlap blending. Both models
+use the same color conversion, alignment, and exposure correction. We demosaic
+the base-ISO RAW reference with bilinear interpolation to compare it with the
+models' RGB output.
+
+See the [benchmark instructions](../../scripts/benchmark.md) for setup, pinned
+dataset revision, reference selections, and report generation. The generated
+`report.md` records model hashes, package versions, and metric settings.
