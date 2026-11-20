@@ -29,9 +29,9 @@ camera color conversion after inference. The graph takes no ISO input.
 | OSAID v1.0 | Open Weights; no claim of full OSAID compliance |
 | MOF | See evaluation results below |
 | Training data license | CC BY-SA 4.0 for both datasets; [RawNIND license record](https://doi.org/10.14428/DVN/DEQCIM) |
-| Training data provenance | RawNIND and Okeinla dataset: paired noisy and reference RAW photographs. Okeinla captures use a tripod-mounted Sony A7C II with base-ISO references. |
+| Training data provenance | RawNIND and Okeinla dataset: paired noisy and reference RAW photographs. Okeinla captures use a tripod-mounted Sony A7C II with base-ISO references. The Okeinla training images show only objects. No people appear in them. |
 | Training code | Public GPLv3 source linked above |
-| Known limitations | Bayer only; no X-Trans or linear-RGB variant; no bitwise retraining claim |
+| Known limitations | Bayer only; no X-Trans or linear-RGB variant; no bitwise retraining claim. We used a frozen, ImageNet-pretrained VGG16 to compute the perceptual loss during training. We cannot verify the provenance of every image used to pretrain VGG16. Okeinla does not ship or run VGG16 at inference. |
 | Published research | [Okeinla technical report](#technical-report); upstream [RawNIND](https://arxiv.org/abs/2501.08924) and [NAFNet](https://arxiv.org/abs/2204.04676) papers |
 | Inference | Local; no telemetry or cloud inference |
 | Scope | RAW denoising and demosaicing |
@@ -80,19 +80,20 @@ release does not claim an exact replay of historical training.
 
 We compared Okeinla and RawNIND on 133 noisy Sony A7C II images from the
 [benchmark dataset](https://huggingface.co/datasets/AyedaOk/rawbench-dataset),
-using one base-ISO reference per scene.
+using one base-ISO reference per scene. All 133 test images come from the same
+camera as Okeinla's own training data, while RawNIND never saw that camera.
 
 | Model | PSNR ↑ | MS-SSIM ↑ | HFEN ↓ | Mean ΔE00 ↓ |
 | --- | ---: | ---: | ---: | ---: |
 | RawNIND | 47.302874 | 0.996527 | 0.579897 | 1.383124 |
 | Okeinla | **47.544281** | **0.996969** | **0.565079** | **1.116526** |
 
-The [Python script](../../scripts/benchmark.py) evaluates ONNX RGB predictions
+The [Python script](benchmark/benchmark.py) evaluates ONNX RGB predictions
 with source-derived per-tile gain correction and overlap blending. Both models
 use the same color conversion, alignment, and exposure correction. We demosaic
 the base-ISO RAW reference with bilinear interpolation to compare it with the
 models' RGB output.
 
-See the [benchmark instructions](../../scripts/benchmark.md) for setup, pinned
+See the [benchmark instructions](benchmark/benchmark.md) for setup, pinned
 dataset revision, reference selections, and report generation. The generated
 `report.md` records model hashes, package versions, and metric settings.

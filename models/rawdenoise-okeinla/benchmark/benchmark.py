@@ -23,7 +23,7 @@ import numpy as np
 from benchmark_alignment import apply_rgb_alignment, estimate_rgb_alignment
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 DATASET = "AyedaOk/rawbench-dataset"
 REVISION = "978c222c700b2dda9b4aa96af5fc54dad1fa6e87"
 PROTOCOL = "darktable-ai-direct-rgb-v1"
@@ -313,7 +313,7 @@ def main():
     models = {"Okeinla": args.okeinla, "RawNIND": args.rawnind}
     for path in models.values():
         if not path.is_file():
-            parser.error(f"missing ONNX: {path}; see scripts/benchmark.md for model setup")
+            parser.error(f"missing ONNX: {path}; see models/rawdenoise-okeinla/benchmark/benchmark.md for model setup")
     import onnxruntime as ort
 
     files, pairs = dataset_manifest()

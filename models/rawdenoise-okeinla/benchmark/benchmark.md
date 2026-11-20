@@ -14,7 +14,7 @@ Skip setup and conversion if you have both FP32 Bayer ONNX files in `output/`.
 Run the benchmark:
 
 ```sh
-uv run --group rawnind python scripts/benchmark.py
+uv run --group rawnind python models/rawdenoise-okeinla/benchmark/benchmark.py
 ```
 
 The full run downloads about 5.7 GB and scores 133 images on CPU. To check RAM
@@ -57,11 +57,3 @@ ISO100_1, ISO100_1, ISO100_1, ISO100_3, ISO100_3
 
 Photos: Ayeda Okambawa, CC BY-SA 4.0; see the dataset's license.
 Benchmark code: Ayeda Okambawa, under this repository's GPLv3 license.
-
-## Tests
-
-Run synthetic checks without downloads or model inference:
-
-```sh
-uv run --no-sync python -m unittest discover -s scripts -p 'test_benchmark.py'
-```
