@@ -27,7 +27,7 @@ camera color conversion after inference. The graph takes no ISO input.
 | --- | --- |
 | Model license | GPL-3.0-only; NAFNet components retain their MIT notice |
 | OSAID v1.0 | Open Weights; no claim of full OSAID compliance |
-| MOF | See evaluation results below |
+| MOF | Class II — Open Tooling Model; self-assessed using the [Model Openness Tool](https://mot.isitopen.ai/model/evaluate) on 2026-11-20. [Assessment YAML](https://github.com/AyedaOk/okeinla/blob/8ce1e395ea1fc60d0682466ba453a349eb7cdcab/docs/okeinla-1.0-29m.yml) |
 | Training data license | CC BY-SA 4.0 for both datasets; [RawNIND license record](https://doi.org/10.14428/DVN/DEQCIM) |
 | Training data provenance | RawNIND and Okeinla dataset: paired noisy and reference RAW photographs. Okeinla captures use a tripod-mounted Sony A7C II with base-ISO references. The Okeinla training images show only objects. No people appear in them. |
 | Training code | Public GPLv3 source linked above |
