@@ -88,12 +88,12 @@ camera as Okeinla's own training data, while RawNIND never saw that camera.
 | RawNIND | 47.302874 | 0.996527 | 0.579897 | 1.383124 |
 | Okeinla | **47.544281** | **0.996969** | **0.565079** | **1.116526** |
 
-The [Python script](benchmark/benchmark.py) evaluates ONNX RGB predictions
+The [Python script](https://github.com/AyedaOk/okeinla/blob/e4eeeaeaef1f93ae9ca96e3b30973544bec53cfe/benchmark/benchmark.py) evaluates ONNX RGB predictions
 with source-derived per-tile gain correction and overlap blending. Both models
 use the same color conversion, alignment, and exposure correction. We demosaic
 the base-ISO RAW reference with bilinear interpolation to compare it with the
 models' RGB output.
 
-See the [benchmark instructions](benchmark/benchmark.md) for setup, pinned
+See the [benchmark instructions](https://github.com/AyedaOk/okeinla/blob/e4eeeaeaef1f93ae9ca96e3b30973544bec53cfe/benchmark/benchmark.md) for setup, pinned
 dataset revision, reference selections, and report generation. The generated
 `report.md` records model hashes, package versions, and metric settings.
